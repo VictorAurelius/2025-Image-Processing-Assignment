@@ -9,3 +9,8 @@ hãy tạo plan task req-1.md cho claude code để thực hiện task sau đây
 5. tạo documents lý thuyết về image processing cần hiểu rõ để có thể hiểu được documents cho từng bài
 6. tạo requirements.txt trong code-implement chưa có thư viện cần thiết, tạo scripts để run code dễ dàng
 7. tạo folder input ảnh và documents hướng dẫn sử dụng trong code
+
+đọc plan task requirements/req-1.md
+tạo req-2 giúp tôi giải các câu hỏi trong documents/CAU HOI TRAC NGHIEM XU LY ANH-1-1-25(N03).pdf
+
+tôi không cần 2. Tạo code Python để verify các câu trả lời (khi có thể), hãy sửa req-2
