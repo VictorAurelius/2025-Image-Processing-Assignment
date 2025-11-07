@@ -14,3 +14,5 @@ hãy tạo plan task req-1.md cho claude code để thực hiện task sau đây
 tạo req-2 giúp tôi giải các câu hỏi trong documents/CAU HOI TRAC NGHIEM XU LY ANH-1-1-25(N03).pdf
 
 tôi không cần 2. Tạo code Python để verify các câu trả lời (khi có thể), hãy sửa req-2
+
+tạo req-3 để giúp tôi giải documents/đề-cương-ôn-tập-2024.pdf
