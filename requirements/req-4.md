@@ -53,12 +53,27 @@
 
 ---
 
+## Yêu Cầu Về Ngôn Ngữ Viết
+
+**QUAN TRỌNG**: Tất cả tài liệu trong `documentation/`, `implementation-guide/`, và `knowledge-base/` phải được viết **bằng tiếng Việt**.
+
+- ✅ **Nội dung chính**: Viết bằng tiếng Việt
+- ✅ **Thuật ngữ chuyên ngành**: Giữ nguyên tiếng Anh (VD: frame differencing, background subtraction, ROI, threshold)
+- ✅ **Code và comments**: Tiếng Anh (theo chuẩn quốc tế)
+- ✅ **Tên biến, hàm**: Tiếng Anh
+- ✅ **Giải thích thuật toán**: Tiếng Việt với thuật ngữ tiếng Anh trong ngoặc
+
+**Ví dụ đúng cách viết:**
+> "Thuật toán **frame differencing** hoạt động bằng cách tính toán sự khác biệt giữa các **frame** liên tiếp. Khi **threshold** được áp dụng, hệ thống sẽ phát hiện **motion** trong video."
+
+---
+
 ## Cấu Trúc Dự Án
 
 ### Folder Structure:
 
 ```
-req-4-project/
+final-project/
 ├── code/                           # Code implementation
 │   ├── src/
 │   │   ├── main.py                # Main application

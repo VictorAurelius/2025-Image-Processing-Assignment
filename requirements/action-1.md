@@ -59,3 +59,13 @@ Hãy giúp tôi tạo req-4 để thực hiện đề tài này:
 2. tài liệu theo yêu cầu báo cáo đầy đủ
 3. hướng dẫn thực hiện đề tài: chuẩn bị input, môi trường, ...
 4. Kiến thức để hiểu được đề tài
+
+req-4 đã có tạo implementation-guide, documentation, knowledge-base chưa? nếu chưa sửa req-4 và thực hiện tạo luôn
+
+tôi đổi tên folder thành final-project rồi, hãy sửa lại địa chỉ lưu file nhé
+
+tôi cần bạn tạo implementation-guide, documentation, knowledge-base ở dạng tiếng việt, ngoại trừ các từ chuyên ngành cần tiếng anh ra.
+
+Hãy sửa lại 2-data-preparation và 3-roi-definition đã tạo sang tiếng việt nữa, ngoài ra tôi đã xóa mất 1 file số 1 của implementation-guide, hãy tạo lại
+
+trước tiên hãy sửa lại req-4 để thêm yêu cầu tiếng viết và tên folder vừa rồi đã, sau đó hãy tiếp tục tạo
