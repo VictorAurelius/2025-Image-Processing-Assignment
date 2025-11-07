@@ -16,3 +16,46 @@ tạo req-2 giúp tôi giải các câu hỏi trong documents/CAU HOI TRAC NGHIE
 tôi không cần 2. Tạo code Python để verify các câu trả lời (khi có thể), hãy sửa req-2
 
 tạo req-3 để giúp tôi giải documents/đề-cương-ôn-tập-2024.pdf
+
+tôi cần làm đề tài bài tập lớn cuối kỳ như sau:
+"43. Phân Vùng Người & Phát Hiện Xâm Nhập Khu Vực Cấm
+43.1. Yêu cầu:
+ Sử dụng phân vùng dựa trên chuyển động (frame differencing) để tách đối tượng di
+chuyển.
+ Áp dụng ngưỡng thích nghi (adaptive thresholding) để xử lý điều kiện ánh sáng thay
+đổi.
+ Dùng phát hiện biên (Sobel/Canny) kết hợp với region growing để xác định hình
+người.
+ Cảnh báo khi người vượt qua vùng cấm trong camera an ninh.
+43.2. Sản phẩm cần nộp:
+ Mã nguồn (OpenCV/Python hoặc MATLAB).
+ Video mô phỏng cảnh xâm nhập + bounding box đối tượng.
+ Báo cáo độ chính xác phân vùng người theo các điều kiện ánh sáng.
+
+Yêu Cầu chung về Báo cáo:
+1. Cơ sở lý thuyết:
+o Trình bày đầy đủ các khái niệm cơ bản về xử lý ảnh, đặc biệt là phát hiện biên và
+các phương pháp phát hiện biên (Canny, Sobel, Prewitt).
+o Giải thích nguyên lý hoạt động của từng phương pháp và cách thức áp dụng vào
+các bài toán trong công nghiệp.
+o Đề cập đến các yếu tố ảnh hưởng đến chất lượng xử lý hình ảnh như độ phân giải,
+ánh sáng, nhiễu ảnh, v.v.
+2. Cơ sở thực hành:
+o Mô tả quy trình thu thập dữ liệu (hình ảnh sản phẩm, điều kiện môi trường, v.v...).
+o Phân tích các kỹ thuật được áp dụng trong việc xử lý và phát hiện lỗi trên ảnh.
+o Đánh giá kết quả thực nghiệm, so sánh với các phương pháp khác và làm rõ các
+ưu nhược điểm.
+3. Kết luận và Đánh giá:
+o Tóm tắt kết quả đạt được trong việc phát hiện lỗi, đếm số lượng sản phẩm, v.v...
+o Đánh giá hiệu quả của phương pháp áp dụng và độ chính xác của kết quả.
+o Đề xuất cải tiến và ứng dụng trong các tình huống thực tế.
+4. Sản phẩm kèm theo:
+o Mã nguồn (source code) cho các thuật toán được triển khai.
+o Hình ảnh minh họa trước và sau khi xử lý.
+o Các biểu đồ, bảng biểu phân tích kết quả và các tài liệu hỗ trợ khác."
+
+Hãy giúp tôi tạo req-4 để thực hiện đề tài này:
+1. Code hoàn thiện ở folder riêng
+2. tài liệu theo yêu cầu báo cáo đầy đủ
+3. hướng dẫn thực hiện đề tài: chuẩn bị input, môi trường, ...
+4. Kiến thức để hiểu được đề tài
