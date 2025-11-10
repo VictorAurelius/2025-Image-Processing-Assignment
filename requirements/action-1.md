@@ -69,3 +69,5 @@ tôi cần bạn tạo implementation-guide, documentation, knowledge-base ở d
 Hãy sửa lại 2-data-preparation và 3-roi-definition đã tạo sang tiếng việt nữa, ngoài ra tôi đã xóa mất 1 file số 1 của implementation-guide, hãy tạo lại
 
 trước tiên hãy sửa lại req-4 để thêm yêu cầu tiếng viết và tên folder vừa rồi đã, sau đó hãy tiếp tục tạo
+
+hãy tạo cho đến khi hết to-do tasks nhé, không dừng lại
