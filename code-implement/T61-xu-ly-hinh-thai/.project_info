@@ -1,0 +1,166 @@
+================================================================================
+PROJECT: T61 - XỬ LÝ HÌNH THÁI (MORPHOLOGICAL OPERATIONS)
+================================================================================
+
+Nguồn: Giáo trình T61-78 Xử lý hình thái
+Tác giả: Ph.D Phan Thanh Toàn
+Ngày tạo: 2025-11-17
+
+================================================================================
+CẤU TRÚC PROJECT
+================================================================================
+
+TỔNG QUAN:
+- 9 bài tập hoàn chỉnh
+- Mỗi bài 1 file Python độc lập
+- Tự động tạo ảnh mẫu nếu thiếu input
+- Console output tiếng Việt chi tiết
+- Visualization đầy đủ với matplotlib
+
+FILES CHÍNH:
+1. bai-1-opening/denoise.py              - Opening để khử nhiễu muối tiêu
+2. bai-2-closing/fill_holes.py           - Closing để lấp lỗ và nối nét
+3. bai-3-gradient/extract_edges.py       - Morphological Gradient trích biên
+4. bai-4-watershed/separate.py           - Watershed đếm đồng xu dính nhau
+5. bai-5-character-segmentation/segment.py - Phân đoạn ký tự biển số
+6. bai-6-particle-measurement/measure.py - Đo và phân loại hạt/lỗ
+7. bai-7-pruning/prune.py                - Pruning bằng Hit-or-Miss
+8. bai-8-foreground-extraction/extract.py - Tách tiền cảnh/core/rim
+9. bai-9-background-removal/remove.py    - Top-hat/Black-hat khử nền
+
+FILES HỖ TRỢ:
+- requirements.txt           - Dependencies
+- run_all.sh                 - Script chạy tất cả (Linux/Mac)
+- run_all.bat                - Script chạy tất cả (Windows)
+- test_setup.py              - Kiểm tra môi trường
+- README.md                  - Tài liệu chi tiết
+- QUICK_START.md             - Hướng dẫn nhanh
+- input/generate_samples.py  - Tạo ảnh mẫu
+- input/README.md            - Hướng dẫn input
+
+================================================================================
+KỸ THUẬT SỬ DỤNG
+================================================================================
+
+PHÉP TOÁN HÌNH THÁI:
+1. Erosion (Xói mòn)         - Thu nhỏ vật thể
+2. Dilation (Giãn nở)        - Mở rộng vật thể
+3. Opening                   - Erosion → Dilation (khử nhiễu)
+4. Closing                   - Dilation → Erosion (lấp lỗ)
+5. Morphological Gradient    - Dilation - Erosion (trích biên)
+6. Top-hat                   - Img - Opening (vật thể sáng)
+7. Black-hat                 - Closing - Img (vật thể tối)
+8. Hit-or-Miss               - Phát hiện pattern cụ thể
+9. Watershed                 - Phân đoạn vật thể chạm nhau
+
+STRUCTURING ELEMENTS:
+- RECT: Hình chữ nhật
+- ELLIPSE: Hình elip/tròn
+- CROSS: Hình chữ thập
+- Custom: Tự định nghĩa
+
+================================================================================
+CÁCH CHẠY
+================================================================================
+
+1. CÀI ĐẶT:
+   pip install -r requirements.txt
+
+2. KIỂM TRA:
+   python test_setup.py
+
+3. CHẠY:
+   # Tất cả
+   ./run_all.sh         (Linux/Mac)
+   run_all.bat          (Windows)
+
+   # Từng bài
+   cd bai-X-xxx
+   python script.py
+
+4. KẾT QUẢ:
+   Xem trong thư mục output/
+
+================================================================================
+ĐẶC ĐIỂM NỔI BẬT
+================================================================================
+
+✓ CODE HOÀN CHỈNH: 100% có thể chạy ngay
+✓ TỰ ĐỘNG: Tạo ảnh mẫu nếu thiếu input
+✓ CHI TIẾT: Console output đầy đủ từng bước
+✓ TRỰC QUAN: Matplotlib visualization
+✓ TIẾNG VIỆT: Comment và output hoàn toàn tiếng Việt
+✓ PHÂN TÍCH: Đánh giá kết quả chi tiết
+✓ LINH HOẠT: Dễ dàng thay đổi input
+
+================================================================================
+DEPENDENCIES
+================================================================================
+
+opencv-python >= 4.8.0     - Computer Vision library
+numpy >= 1.24.0            - Numerical computing
+matplotlib >= 3.7.0        - Visualization
+scipy >= 1.11.0            - Scientific computing
+scikit-image >= 0.21.0     - Image processing
+
+================================================================================
+ỨNG DỤNG THỰC TẾ
+================================================================================
+
+1. OCR (Nhận dạng ký tự)
+   - Tiền xử lý văn bản
+   - Phân đoạn ký tự
+   - Làm sạch nhiễu
+
+2. Kiểm tra chất lượng công nghiệp
+   - Phát hiện khuyết tật
+   - Đo đạc linh kiện
+   - Phân loại sản phẩm
+
+3. Y tế sinh học
+   - Phân tích tế bào
+   - Đếm hồng cầu
+   - Phân đoạn mô
+
+4. Xử lý ảnh vệ tinh
+   - Trích xuất đặc trưng
+   - Phân loại địa hình
+   - Phát hiện thay đổi
+
+5. Nhận dạng biển số
+   - Định vị biển số
+   - Phân đoạn ký tự
+   - OCR
+
+================================================================================
+HỌC TẬP
+================================================================================
+
+MỨC ĐỘ: Trung cấp - Nâng cao
+YÊU CẦU KIẾN THỨC:
+- Python cơ bản
+- OpenCV căn bản
+- Xử lý ảnh cơ bản
+
+THỜI GIAN HỌC: 2-3 ngày
+- Ngày 1: Bài 1-3 (Opening, Closing, Gradient)
+- Ngày 2: Bài 4-6 (Watershed, Segmentation, Measurement)
+- Ngày 3: Bài 7-9 (Pruning, Extraction, Top-hat)
+
+================================================================================
+THAM KHẢO
+================================================================================
+
+[1] OpenCV Documentation
+    https://docs.opencv.org/
+
+[2] Digital Image Processing
+    Gonzalez & Woods
+
+[3] Morphological Image Processing
+    Pierre Soille
+
+[4] Giáo trình T61-78
+    Ph.D Phan Thanh Toàn
+
+================================================================================

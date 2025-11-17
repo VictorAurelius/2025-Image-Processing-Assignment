@@ -5,7 +5,12 @@
       "Bash(python scan.py:*)",
       "Bash(python3:*)",
       "Bash(awk:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(chmod:*)",
+      "Bash(pip3 install:*)",
+      "Bash(ls:*)",
+      "Bash(python threshold.py:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

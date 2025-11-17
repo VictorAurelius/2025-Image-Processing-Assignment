@@ -1,0 +1,139 @@
+================================================================
+T21-TACH-BIEN - FILE MANIFEST
+================================================================
+Created: November 17, 2025
+Project: Edge Detection Assignment (10 exercises)
+
+================================================================
+NEW FILES CREATED IN THIS SESSION
+================================================================
+
+1. ROOT DIRECTORY FILES
+-----------------------
+✓ /requirements.txt                    (88 bytes)
+   - opencv-python>=4.8.0
+   - numpy>=1.24.0
+   - scikit-image>=0.21.0
+   - scipy>=1.11.0
+   - matplotlib>=3.7.0
+
+✓ /run_all.sh                         (3.3K, EXECUTABLE)
+   - Bash script to run all 10 exercises
+   - Auto-generates sample images if needed
+   - Color-coded progress output
+   - Success/failure tracking
+
+✓ /run_all.bat                        (3.3K)
+   - Windows batch script version
+   - Same functionality as run_all.sh
+   - Windows-compatible error handling
+
+✓ /README.md                          (6.3K)
+   - Complete project documentation
+   - Installation instructions
+   - Usage examples for all 10 exercises
+   - Troubleshooting guide
+   - Technology descriptions
+
+✓ /QUICK_START.md                     (2.8K)
+   - Quick reference guide
+   - Fast installation steps
+   - Common commands table
+   - Error resolution tips
+
+2. INPUT DIRECTORY FILES
+------------------------
+✓ /input/generate_samples.py          (14K, 402 lines)
+   - Generates 10 sample images
+   - Each image designed for specific exercise
+   - Progress tracking during generation
+   
+   Generated images (when script runs):
+   - building.jpg (600x800) - Bai 1
+   - doc.jpg (800x600) - Bai 2
+   - road.jpg (600x800) - Bai 3
+   - surface.jpg (600x800) - Bai 4
+   - coins.jpg (600x800) - Bai 5
+   - product.jpg (600x800) - Bai 6
+   - surface_crack.jpg (600x800) - Bai 7
+   - leaf.jpg (800x600) - Bai 8
+   - measure.jpg (600x800) - Bai 9
+   - receipt.jpg (800x600) - Bai 10
+
+================================================================
+EXISTING FILES (Previously Created)
+================================================================
+
+EXERCISE SCRIPTS (10 files)
+----------------------------
+✓ /bai-1-edge-detectors/compare.py
+✓ /bai-2-document-scanning/scan.py
+✓ /bai-3-lane-detection/detect.py
+✓ /bai-4-defect-detection/detect.py
+✓ /bai-5-coin-counting/count.py
+✓ /bai-6-product-cropping/crop.py
+✓ /bai-7-crack-detection/detect.py
+✓ /bai-8-leaf-measurement/measure.py
+✓ /bai-9-object-measurement/measure.py
+✓ /bai-10-deskewing/deskew.py
+
+DOCUMENTATION
+-------------
+✓ /input/README.md
+
+DIRECTORIES
+-----------
+✓ /input/sample-images/      (for generated images)
+✓ /output/                   (for results)
+✓ /bai-1-edge-detectors/
+✓ /bai-2-document-scanning/
+✓ /bai-3-lane-detection/
+✓ /bai-4-defect-detection/
+✓ /bai-5-coin-counting/
+✓ /bai-6-product-cropping/
+✓ /bai-7-crack-detection/
+✓ /bai-8-leaf-measurement/
+✓ /bai-9-object-measurement/
+✓ /bai-10-deskewing/
+
+================================================================
+SUMMARY
+================================================================
+
+New Files Created:     4 main files + 1 generator script
+Total Python Files:    11 (10 exercises + 1 generator)
+Total Scripts:         2 (run_all.sh + run_all.bat)
+Total Documentation:   3 (README.md + QUICK_START.md + input/README.md)
+Total Directories:     12 (10 exercises + input + output)
+
+================================================================
+USAGE INSTRUCTIONS
+================================================================
+
+1. SETUP:
+   pip3 install -r requirements.txt
+   python3 input/generate_samples.py
+
+2. RUN INDIVIDUAL:
+   python3 bai-X-name/script.py input/sample-images/image.jpg
+
+3. RUN ALL:
+   ./run_all.sh       (Linux/Mac)
+   run_all.bat        (Windows)
+
+================================================================
+FEATURES
+================================================================
+
+✓ Complete edge detection assignment suite
+✓ 10 different edge detection applications
+✓ Automatic sample image generation
+✓ Cross-platform support (Linux/Mac/Windows)
+✓ Comprehensive documentation
+✓ Error handling and validation
+✓ Progress tracking
+✓ Organized output structure
+
+================================================================
+END OF MANIFEST
+================================================================
