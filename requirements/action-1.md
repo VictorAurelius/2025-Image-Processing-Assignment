@@ -71,3 +71,15 @@ Hãy sửa lại 2-data-preparation và 3-roi-definition đã tạo sang tiếng
 trước tiên hãy sửa lại req-4 để thêm yêu cầu tiếng viết và tên folder vừa rồi đã, sau đó hãy tiếp tục tạo
 
 hãy tạo cho đến khi hết to-do tasks nhé, không dừng lại
+
+hãy đọc req-4 để hiểu context của final-project
+
+bây giờ, tôi có 1 vấn đề là tôi không nắm được các khái niệm cơ bản của image processing, đọc document của final-project thì quá nhiều, không thể hiểu ngay được
+tôi có các file pdf của requirements về các bài thực hành đơn giản của image processing
+hãy đề xuất list các bài thực hành cần học để dễ dàng hiểu về final-project hơn
+lưu ý: không đọc tất cả các file pdf luôn, đọc lần lượt và đề xuất lần lượt (chia làm nhiều to-do task)
+lưu kết quả điều tra vào file md
+
+tạo code và documents cho các bài lab vừa điều tra được trong code-implement và documents giống như T1-bieu-dien-va-thu-nhan-anh bằng cách:
+1. tạo req-5 là plan task cho claude, lưu ý document và comment phải là tiếng việt, hướng dẫn về input đầy đủ, folder chia tên như file pdf. Tạo hướng dẫn đọc code cho từng bài để hiểu được code nhanh nhất
+2. do req-5
