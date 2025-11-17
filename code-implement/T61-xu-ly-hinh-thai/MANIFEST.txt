@@ -1,0 +1,228 @@
+================================================================================
+T61 - XỬ LÝ HÌNH THÁI - MANIFEST
+================================================================================
+
+THỐNG KÊ PROJECT:
+- Tổng số bài tập: 9
+- Tổng số file Python: 11
+- Tổng số dòng code: 2,539 dòng
+- Ngày tạo: 2025-11-17
+
+================================================================================
+DANH SÁCH FILE
+================================================================================
+
+ROOT DIRECTORY:
+├── README.md                     (8,063 bytes)  - Tài liệu chi tiết
+├── QUICK_START.md               (2,xxx bytes)   - Hướng dẫn nhanh
+├── requirements.txt             (88 bytes)      - Dependencies
+├── test_setup.py                (1,xxx bytes)   - Test môi trường
+├── run_all.sh                   (3,593 bytes)   - Script Linux/Mac
+└── run_all.bat                  (5,674 bytes)   - Script Windows
+
+BÀI TẬP:
+├── bai-1-opening/
+│   └── denoise.py               (144 dòng)      - Opening khử nhiễu
+├── bai-2-closing/
+│   └── fill_holes.py            (188 dòng)      - Closing lấp lỗ
+├── bai-3-gradient/
+│   └── extract_edges.py         (197 dòng)      - Morphological Gradient
+├── bai-4-watershed/
+│   └── separate.py              (244 dòng)      - Watershed Segmentation
+├── bai-5-character-segmentation/
+│   └── segment.py               (262 dòng)      - Character Segmentation
+├── bai-6-particle-measurement/
+│   └── measure.py               (328 dòng)      - Particle Measurement
+├── bai-7-pruning/
+│   └── prune.py                 (305 dòng)      - Hit-or-Miss Pruning
+├── bai-8-foreground-extraction/
+│   └── extract.py               (317 dòng)      - Foreground Extraction
+└── bai-9-background-removal/
+    └── remove.py                (352 dòng)      - Top-hat/Black-hat
+
+INPUT/OUTPUT:
+├── input/
+│   ├── README.md                                - Hướng dẫn input
+│   ├── generate_samples.py      (202 dòng)      - Tạo ảnh mẫu
+│   ├── docs/                                    - Ảnh tài liệu
+│   ├── parts/                                   - Ảnh linh kiện
+│   ├── objects/                                 - Ảnh vật thể
+│   ├── coins/                                   - Ảnh đồng xu
+│   ├── plates/                                  - Ảnh biển số
+│   ├── surface/                                 - Ảnh bề mặt
+│   ├── edges/                                   - Ảnh biên
+│   └── conveyor/                                - Ảnh băng chuyền
+└── output/                                      - Kết quả (tự động tạo)
+
+================================================================================
+TÍNH NĂNG
+================================================================================
+
+✓ TỰ ĐỘNG TẠO ẢNH MẪU
+  - Mỗi bài tự động tạo ảnh nếu thiếu input
+  - Script generate_samples.py tạo tất cả cùng lúc
+
+✓ CONSOLE OUTPUT CHI TIẾT
+  - Hiển thị từng bước xử lý
+  - Thông số kỹ thuật
+  - Thống kê kết quả
+  - Phân tích chất lượng
+
+✓ VISUALIZATION ĐẦY ĐỦ
+  - So sánh trước/sau
+  - Các bước trung gian
+  - Biểu đồ thống kê
+  - Histogram, profile line
+
+✓ LƯU KẾT QUẢ
+  - Ảnh xử lý
+  - Biểu đồ phân tích
+  - File thống kê (một số bài)
+  - Zoom chi tiết (một số bài)
+
+✓ SCRIPT CHẠY HÀNG LOẠT
+  - run_all.sh cho Linux/Mac
+  - run_all.bat cho Windows
+  - Hiển thị tiến trình
+  - Báo cáo thành công/thất bại
+
+================================================================================
+KỸ THUẬT
+================================================================================
+
+MORPHOLOGICAL OPERATIONS:
+1. Erosion              - cv2.erode()
+2. Dilation             - cv2.dilate()
+3. Opening              - cv2.morphologyEx(MORPH_OPEN)
+4. Closing              - cv2.morphologyEx(MORPH_CLOSE)
+5. Gradient             - cv2.morphologyEx(MORPH_GRADIENT)
+6. Top-hat              - cv2.morphologyEx(MORPH_TOPHAT)
+7. Black-hat            - cv2.morphologyEx(MORPH_BLACKHAT)
+8. Hit-or-Miss          - cv2.morphologyEx(MORPH_HITMISS)
+
+ADVANCED TECHNIQUES:
+- Distance Transform    - cv2.distanceTransform()
+- Watershed             - cv2.watershed()
+- Connected Components  - cv2.connectedComponents()
+- Contours              - cv2.findContours()
+- Threshold Otsu        - cv2.threshold(THRESH_OTSU)
+
+STRUCTURING ELEMENTS:
+- MORPH_RECT            - Hình chữ nhật
+- MORPH_ELLIPSE         - Hình elip
+- MORPH_CROSS           - Hình chữ thập
+- Custom numpy array    - Tùy chỉnh
+
+================================================================================
+DEPENDENCIES
+================================================================================
+
+Python >= 3.8
+
+Packages:
+- opencv-python >= 4.8.0
+- numpy >= 1.24.0
+- matplotlib >= 3.7.0
+- scipy >= 1.11.0
+- scikit-image >= 0.21.0
+
+================================================================================
+HƯỚNG DẪN SỬ DỤNG
+================================================================================
+
+1. CÀI ĐẶT:
+   pip install -r requirements.txt
+
+2. KIỂM TRA:
+   python test_setup.py
+
+3. CHẠY TẤT CẢ:
+   ./run_all.sh         # Linux/Mac
+   run_all.bat          # Windows
+
+4. CHẠY TỪNG BÀI:
+   cd bai-X-xxx
+   python script.py
+
+5. TẠO ẢNH MẪU:
+   cd input
+   python generate_samples.py
+
+6. XEM KẾT QUẢ:
+   ls output/
+
+================================================================================
+KIỂM TRA CHẤT LƯỢNG
+================================================================================
+
+✓ CODE STANDARDS:
+  - PEP 8 compliant
+  - Type hints (một phần)
+  - Docstrings đầy đủ
+  - Comments tiếng Việt
+
+✓ ERROR HANDLING:
+  - Kiểm tra file tồn tại
+  - Tự động tạo thư mục
+  - Tự động tạo ảnh mẫu
+  - Try-catch cho I/O
+
+✓ TESTING:
+  - test_setup.py kiểm tra môi trường
+  - Mỗi bài có thể chạy độc lập
+  - run_all.sh/bat test tất cả
+
+✓ DOCUMENTATION:
+  - README.md chi tiết
+  - QUICK_START.md hướng dẫn nhanh
+  - Docstrings trong code
+  - Comments giải thích
+
+================================================================================
+MÃ NGUỒN GỐC
+================================================================================
+
+Tất cả code lấy Y NGUYÊN từ PDF:
+"T61-78 Xử lý hình thái" - Ph.D Phan Thanh Toàn
+
+Trang tương ứng:
+- Bài 1: Trang 61-62
+- Bài 2: Trang 63-64
+- Bài 3: Trang 65-66
+- Bài 4: Trang 67-68
+- Bài 5: Trang 69-70
+- Bài 6: Trang 71-72
+- Bài 7: Trang 73-74
+- Bài 8: Trang 75-76
+- Bài 9: Trang 77-78
+
+================================================================================
+BẢN QUYỀN
+================================================================================
+
+Tài liệu học tập - Chỉ sử dụng cho mục đích giáo dục
+Nguồn: Giáo trình Ph.D Phan Thanh Toàn
+
+================================================================================
+LIÊN HỆ
+================================================================================
+
+Nếu có vấn đề hoặc góp ý, vui lòng:
+1. Kiểm tra README.md và QUICK_START.md
+2. Chạy test_setup.py để kiểm tra môi trường
+3. Đảm bảo đã cài đặt đầy đủ dependencies
+
+================================================================================
+PHIÊN BẢN
+================================================================================
+
+Version: 1.0.0
+Date: 2025-11-17
+Status: HOÀN THÀNH - 100% CHẠY ĐƯỢC
+
+Changelog:
+- 2025-11-17: Tạo project hoàn chỉnh với 9 bài tập
+- 2025-11-17: Thêm tài liệu và scripts
+- 2025-11-17: Kiểm tra và hoàn thiện
+
+================================================================================
