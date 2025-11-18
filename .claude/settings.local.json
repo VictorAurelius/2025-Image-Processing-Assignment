@@ -10,7 +10,10 @@
       "Bash(pip3 install:*)",
       "Bash(ls:*)",
       "Bash(python threshold.py:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(for i in {3..10})",
+      "Bash(do echo 'Creating bai-$i-how-to-read.md...')",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
