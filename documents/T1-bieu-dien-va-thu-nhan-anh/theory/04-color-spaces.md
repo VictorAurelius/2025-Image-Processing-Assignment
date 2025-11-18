@@ -249,32 +249,510 @@ Best → Worst:
 LAB > YCrCb > HSV > RGB
 ```
 
-## 11. Code Examples
+## 11. Code Examples Chi Tiết
 
-### 11.1. Skin Detection với HSV
+### 11.1. Complete Skin Detection Pipeline
 ```python
-hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-lower = (0, 30, 90)
-upper = (25, 180, 255)
-mask = cv2.inRange(hsv, lower, upper)
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def detect_skin_hsv(img_bgr):
+    """Skin detection using HSV color space"""
+    # Convert BGR to HSV
+    hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+
+    # Define skin color range in HSV
+    # Hue: 0-25 (red-orange for skin tone)
+    # Saturation: 30-180 (not too pale, not too saturated)
+    # Value: 90-255 (bright enough)
+    lower_hsv = np.array([0, 30, 90], dtype=np.uint8)
+    upper_hsv = np.array([25, 180, 255], dtype=np.uint8)
+
+    # Create mask
+    mask_hsv = cv2.inRange(hsv, lower_hsv, upper_hsv)
+
+    return mask_hsv
+
+def detect_skin_ycrcb(img_bgr):
+    """Skin detection using YCrCb color space"""
+    # Convert BGR to YCrCb
+    ycrcb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2YCrCb)
+
+    # Define skin color range in YCrCb
+    # Y: 0-255 (any brightness - not critical)
+    # Cr: 135-180 (red chroma)
+    # Cb: 85-135 (blue chroma)
+    lower_ycc = np.array([0, 135, 85], dtype=np.uint8)
+    upper_ycc = np.array([255, 180, 135], dtype=np.uint8)
+
+    # Create mask
+    mask_ycc = cv2.inRange(ycrcb, lower_ycc, upper_ycc)
+
+    return mask_ycc
+
+def detect_skin_combined(img_bgr, morph_cleanup=True):
+    """
+    Robust skin detection combining HSV and YCrCb
+
+    Args:
+        img_bgr: Input image in BGR format
+        morph_cleanup: Apply morphological operations to clean up mask
+
+    Returns:
+        mask_final: Binary mask of skin regions
+    """
+    # Get masks from both color spaces
+    mask_hsv = detect_skin_hsv(img_bgr)
+    mask_ycc = detect_skin_ycrcb(img_bgr)
+
+    # Combine masks (intersection - both must agree)
+    mask_final = cv2.bitwise_and(mask_hsv, mask_ycc)
+
+    if morph_cleanup:
+        # Remove small noise
+        kernel_erode = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+        mask_final = cv2.erode(mask_final, kernel_erode, iterations=1)
+
+        # Fill holes
+        kernel_dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+        mask_final = cv2.dilate(mask_final, kernel_dilate, iterations=2)
+
+    return mask_final
+
+# Example usage
+def demo_skin_detection(image_path):
+    """Demo skin detection pipeline"""
+    # Load image
+    img = cv2.imread(image_path)
+
+    # Detect skin using different methods
+    mask_hsv = detect_skin_hsv(img)
+    mask_ycc = detect_skin_ycrcb(img)
+    mask_combined = detect_skin_combined(img)
+
+    # Apply masks to original image
+    skin_hsv = cv2.bitwise_and(img, img, mask=mask_hsv)
+    skin_ycc = cv2.bitwise_and(img, img, mask=mask_ycc)
+    skin_combined = cv2.bitwise_and(img, img, mask=mask_combined)
+
+    # Visualize results
+    fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+
+    axes[0, 0].imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    axes[0, 0].set_title('Original')
+
+    axes[0, 1].imshow(mask_hsv, cmap='gray')
+    axes[0, 1].set_title('HSV Mask')
+
+    axes[0, 2].imshow(mask_ycc, cmap='gray')
+    axes[0, 2].set_title('YCrCb Mask')
+
+    axes[0, 3].imshow(mask_combined, cmap='gray')
+    axes[0, 3].set_title('Combined Mask')
+
+    axes[1, 0].axis('off')
+
+    axes[1, 1].imshow(cv2.cvtColor(skin_hsv, cv2.COLOR_BGR2RGB))
+    axes[1, 1].set_title('HSV Result')
+
+    axes[1, 2].imshow(cv2.cvtColor(skin_ycc, cv2.COLOR_BGR2RGB))
+    axes[1, 2].set_title('YCrCb Result')
+
+    axes[1, 3].imshow(cv2.cvtColor(skin_combined, cv2.COLOR_BGR2RGB))
+    axes[1, 3].set_title('Combined Result')
+
+    for ax in axes.flatten():
+        ax.axis('off')
+
+    plt.tight_layout()
+    plt.savefig('skin_detection_comparison.png', dpi=150)
+    print("Saved: skin_detection_comparison.png")
+
+# demo_skin_detection('person.jpg')
 ```
 
-### 11.2. Skin Detection với YCrCb
+### 11.2. Color Space Conversion Visualization
 ```python
-ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
-lower = (0, 135, 85)
-upper = (255, 180, 135)
-mask = cv2.inRange(ycrcb, lower, upper)
+def visualize_color_spaces(img_path):
+    """Visualize image in different color spaces"""
+    # Load image (BGR)
+    img_bgr = cv2.imread(img_path)
+    img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+
+    # Convert to different color spaces
+    img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+    img_ycrcb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2YCrCb)
+    img_lab = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2LAB)
+    img_gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
+
+    # Create figure
+    fig, axes = plt.subplots(3, 4, figsize=(16, 12))
+
+    # RGB channels
+    axes[0, 0].imshow(img_rgb)
+    axes[0, 0].set_title('RGB Original')
+
+    axes[0, 1].imshow(img_rgb[:,:,0], cmap='Reds')
+    axes[0, 1].set_title('R Channel')
+
+    axes[0, 2].imshow(img_rgb[:,:,1], cmap='Greens')
+    axes[0, 2].set_title('G Channel')
+
+    axes[0, 3].imshow(img_rgb[:,:,2], cmap='Blues')
+    axes[0, 3].set_title('B Channel')
+
+    # HSV channels
+    axes[1, 0].imshow(img_rgb)
+    axes[1, 0].set_title('HSV Original')
+
+    axes[1, 1].imshow(img_hsv[:,:,0], cmap='hsv')
+    axes[1, 1].set_title('H (Hue)')
+
+    axes[1, 2].imshow(img_hsv[:,:,1], cmap='gray')
+    axes[1, 2].set_title('S (Saturation)')
+
+    axes[1, 3].imshow(img_hsv[:,:,2], cmap='gray')
+    axes[1, 3].set_title('V (Value)')
+
+    # YCrCb channels
+    axes[2, 0].imshow(img_rgb)
+    axes[2, 0].set_title('YCrCb Original')
+
+    axes[2, 1].imshow(img_ycrcb[:,:,0], cmap='gray')
+    axes[2, 1].set_title('Y (Luma)')
+
+    axes[2, 2].imshow(img_ycrcb[:,:,1], cmap='RdBu_r')
+    axes[2, 2].set_title('Cr (Red chroma)')
+
+    axes[2, 3].imshow(img_ycrcb[:,:,2], cmap='RdYlBu_r')
+    axes[2, 3].set_title('Cb (Blue chroma)')
+
+    for ax in axes.flatten():
+        ax.axis('off')
+
+    plt.tight_layout()
+    plt.savefig('color_space_channels.png', dpi=150)
+    print("Saved: color_space_channels.png")
+
+# visualize_color_spaces('colorful_image.jpg')
 ```
 
-### 11.3. Kết hợp 2 masks
+### 11.3. HSV Color Selection Tool
 ```python
-mask_hsv = detect_skin_hsv(img)
-mask_ycc = detect_skin_ycrcb(img)
-mask_final = cv2.bitwise_and(mask_hsv, mask_ycc)
+def create_hsv_color_selector():
+    """Interactive HSV color range selector for object detection"""
+    import cv2
+
+    def nothing(x):
+        pass
+
+    # Create window
+    cv2.namedWindow('HSV Selector')
+
+    # Create trackbars
+    cv2.createTrackbar('H_min', 'HSV Selector', 0, 179, nothing)
+    cv2.createTrackbar('H_max', 'HSV Selector', 179, 179, nothing)
+    cv2.createTrackbar('S_min', 'HSV Selector', 0, 255, nothing)
+    cv2.createTrackbar('S_max', 'HSV Selector', 255, 255, nothing)
+    cv2.createTrackbar('V_min', 'HSV Selector', 0, 255, nothing)
+    cv2.createTrackbar('V_max', 'HSV Selector', 255, 255, nothing)
+
+    # Load image
+    img = cv2.imread('target.jpg')
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    while True:
+        # Get trackbar values
+        h_min = cv2.getTrackbarPos('H_min', 'HSV Selector')
+        h_max = cv2.getTrackbarPos('H_max', 'HSV Selector')
+        s_min = cv2.getTrackbarPos('S_min', 'HSV Selector')
+        s_max = cv2.getTrackbarPos('S_max', 'HSV Selector')
+        v_min = cv2.getTrackbarPos('V_min', 'HSV Selector')
+        v_max = cv2.getTrackbarPos('V_max', 'HSV Selector')
+
+        # Create mask
+        lower = np.array([h_min, s_min, v_min])
+        upper = np.array([h_max, s_max, v_max])
+        mask = cv2.inRange(hsv, lower, upper)
+
+        # Apply mask
+        result = cv2.bitwise_and(img, img, mask=mask)
+
+        # Show images
+        combined = np.hstack([img, result])
+        cv2.imshow('HSV Selector', combined)
+
+        # Print current range
+        print(f"\rRange: H[{h_min}-{h_max}] S[{s_min}-{s_max}] V[{v_min}-{v_max}]", end='')
+
+        # Exit on ESC
+        if cv2.waitKey(1) & 0xFF == 27:
+            break
+
+    cv2.destroyAllWindows()
+    print(f"\n\nFinal HSV range:")
+    print(f"  lower = ({h_min}, {s_min}, {v_min})")
+    print(f"  upper = ({h_max}, {s_max}, {v_max})")
+
+# create_hsv_color_selector()
 ```
 
-## 12. Tóm tắt
+### 11.4. Performance Comparison
+```python
+import time
+
+def benchmark_color_conversions(img_bgr, num_iterations=100):
+    """Benchmark different color space conversions"""
+
+    conversions = {
+        'BGR to GRAY': cv2.COLOR_BGR2GRAY,
+        'BGR to RGB': cv2.COLOR_BGR2RGB,
+        'BGR to HSV': cv2.COLOR_BGR2HSV,
+        'BGR to YCrCb': cv2.COLOR_BGR2YCrCb,
+        'BGR to LAB': cv2.COLOR_BGR2LAB,
+    }
+
+    results = {}
+
+    print("Benchmarking color space conversions...")
+    print(f"Image size: {img_bgr.shape}")
+    print(f"Iterations: {num_iterations}\n")
+
+    for name, code in conversions.items():
+        start = time.time()
+        for _ in range(num_iterations):
+            _ = cv2.cvtColor(img_bgr, code)
+        elapsed = time.time() - start
+
+        results[name] = elapsed / num_iterations * 1000  # ms
+
+        print(f"{name:<20}: {results[name]:.3f} ms/frame")
+
+    return results
+
+# Example
+img = cv2.imread('test.jpg')
+benchmark_color_conversions(img)
+```
+
+**Output mẫu**:
+```
+Benchmarking color space conversions...
+Image size: (1080, 1920, 3)
+Iterations: 100
+
+BGR to GRAY         : 0.523 ms/frame
+BGR to RGB          : 0.612 ms/frame
+BGR to HSV          : 1.234 ms/frame
+BGR to YCrCb        : 0.987 ms/frame
+BGR to LAB          : 1.456 ms/frame
+```
+
+### 11.5. Color-based Object Tracking
+```python
+def track_colored_object(video_path, color_range_hsv):
+    """
+    Track object by color in video
+
+    Args:
+        video_path: Path to video file
+        color_range_hsv: Tuple of (lower, upper) HSV ranges
+    """
+    cap = cv2.VideoCapture(video_path)
+
+    lower_hsv, upper_hsv = color_range_hsv
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Convert to HSV
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        # Create mask
+        mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
+
+        # Clean up mask
+        mask = cv2.erode(mask, None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
+
+        # Find contours
+        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        if contours:
+            # Get largest contour
+            largest = max(contours, key=cv2.contourArea)
+
+            # Get bounding box
+            x, y, w, h = cv2.boundingRect(largest)
+
+            # Draw rectangle
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+            # Get center
+            cx, cy = x + w//2, y + h//2
+            cv2.circle(frame, (cx, cy), 5, (0, 0, 255), -1)
+
+            # Display info
+            cv2.putText(frame, f"Object at ({cx}, {cy})", (10, 30),
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+        # Show result
+        cv2.imshow('Object Tracking', frame)
+        cv2.imshow('Mask', mask)
+
+        if cv2.waitKey(30) & 0xFF == 27:  # ESC to exit
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Example: Track red object
+# Red wraps around in Hue, so need two ranges
+lower_red1 = np.array([0, 100, 100])
+upper_red1 = np.array([10, 255, 255])
+# track_colored_object('video.mp4', (lower_red1, upper_red1))
+```
+
+## 12. Best Practices
+
+### ✅ Nên làm
+
+1. **Luôn nhớ OpenCV dùng BGR, không phải RGB**
+   ```python
+   # ✅ ĐÚNG
+   img = cv2.imread('photo.jpg')  # BGR format
+   img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert cho matplotlib
+
+   # ❌ SAI - Quên convert
+   plt.imshow(img)  # Màu sai (B và R đảo ngược)!
+   ```
+   **Lý do**: OpenCV default là BGR để tương thích với camera drivers cũ.
+
+2. **Dùng đúng color space cho từng task**
+   ```python
+   # Skin detection → YCrCb
+   ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+
+   # Color-based selection → HSV
+   hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+   # Color difference → LAB
+   lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+   ```
+
+3. **Kết hợp nhiều color spaces cho robust detection**
+   ```python
+   mask_hsv = detect_in_hsv(img)
+   mask_ycrcb = detect_in_ycrcb(img)
+   mask_final = cv2.bitwise_and(mask_hsv, mask_ycrcb)  # Intersection
+   ```
+   **Lý do**: Mỗi color space có điểm mạnh riêng, kết hợp giảm false positives.
+
+### ❌ Không nên làm
+
+1. **Không dùng RGB cho thresholding**
+   ```python
+   # ❌ SAI - RGB coupling makes thresholding hard
+   mask = (img[:,:,0] > 100) & (img[:,:,1] < 50) & (img[:,:,2] < 50)  # Phức tạp!
+
+   # ✅ ĐÚNG - HSV decouples color from brightness
+   hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+   mask = cv2.inRange(hsv, (0, 50, 50), (10, 255, 255))  # Đơn giản hơn
+   ```
+
+2. **Không quên Hue wrapping**
+   ```python
+   # ❌ SAI - Red color spans 0° and 360°
+   mask = cv2.inRange(hsv, (170, 50, 50), (10, 255, 255))  # Không work!
+
+   # ✅ ĐÚNG - Handle wrapping
+   mask1 = cv2.inRange(hsv, (0, 50, 50), (10, 255, 255))
+   mask2 = cv2.inRange(hsv, (170, 50, 50), (180, 255, 255))
+   mask = cv2.bitwise_or(mask1, mask2)
+   ```
+
+### 💡 Tips
+
+1. **HSV ranges cho màu common**
+   ```
+   Red:    H ∈ [0-10] or [170-180]
+   Orange: H ∈ [10-25]
+   Yellow: H ∈ [25-35]
+   Green:  H ∈ [35-85]
+   Blue:   H ∈ [85-125]
+   Purple: H ∈ [125-155]
+   ```
+
+2. **Skin detection thresholds**
+   ```python
+   # HSV (works in normal lighting)
+   lower_hsv = (0, 30, 90)
+   upper_hsv = (25, 180, 255)
+
+   # YCrCb (more robust to lighting)
+   lower_ycc = (0, 135, 85)
+   upper_ycc = (255, 180, 135)
+   ```
+
+## 13. Common Pitfalls
+
+### Lỗi 1: BGR vs RGB confusion
+**Vấn đề**:
+```python
+img = cv2.imread('photo.jpg')
+plt.imshow(img)  # Colors look wrong!
+```
+
+**Giải pháp**:
+```python
+img_bgr = cv2.imread('photo.jpg')
+img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+plt.imshow(img_rgb)  # Correct colors
+```
+
+### Lỗi 2: HSV range confusion (0-179 vs 0-360)
+**Vấn đề**:
+```python
+# OpenCV HSV: H ∈ [0, 179]
+# Standard HSV: H ∈ [0, 360]
+```
+
+**Giải pháp**: Luôn chia 2 khi convert từ degree sang OpenCV range.
+
+### Lỗi 3: Thresholding trong sai color space
+**Vấn đề**: Dùng RGB cho skin detection → khó tune, không robust.
+
+**Giải pháp**: Dùng YCrCb hoặc HSV.
+
+## 14. Bài tập Thực hành
+
+### Bài 1: Implement Skin Detector
+**Đề bài**: Viết hàm `detect_faces_by_skin()` phát hiện khuôn mặt bằng skin color.
+
+**Gợi ý**:
+- Combine HSV và YCrCb
+- Morphological cleanup
+- Find contours
+- Filter by size/shape
+
+### Bài 2: Color-based Object Counter
+**Đề bài**: Đếm số objects có màu cụ thể trong ảnh.
+
+**Gợi ý**:
+- Convert to HSV
+- Threshold
+- Connected components labeling
+- Filter và count
+
+### Bài 3: Compare Color Spaces
+**Đề bài**: So sánh hiệu quả của RGB, HSV, YCrCb cho skin detection trên 10 ảnh.
+
+**Yêu cầu**: Tính precision, recall cho mỗi color space.
+
+## 15. Tóm tắt
 
 **RGB**: Đơn giản, trực tiếp, nhưng không perceptually uniform
 **HSV**: Intuitive, tốt cho color selection, robust to lighting changes
@@ -286,6 +764,13 @@ mask_final = cv2.bitwise_and(mask_hsv, mask_ycc)
 - User interaction → HSV
 - Skin/face → YCrCb
 - Color science → LAB
+
+**Key Takeaways**:
+1. **OpenCV uses BGR**, not RGB - always convert for display
+2. **HSV separates color from brightness** - best for color-based segmentation
+3. **YCrCb robust to lighting** - best for skin detection
+4. **Combine multiple color spaces** for robust detection
+5. **Hue wraps around** - handle red color carefully
 
 ---
 

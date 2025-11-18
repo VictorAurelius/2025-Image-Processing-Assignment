@@ -271,7 +271,233 @@ def count_components(binary_img, connectivity=8):
     return num_labels - 1  # Trừ background
 ```
 
-## 11. Tóm tắt
+## 11. Code Examples Chi Tiết
+
+### 11.1. Connected Components Labeling
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def label_connected_components(binary_img, connectivity=8):
+    """
+    Label connected components trong binary image
+
+    Args:
+        binary_img: Binary image (0 or 255)
+        connectivity: 4 or 8
+
+    Returns:
+        num_labels, labeled_image
+    """
+    # OpenCV connectedComponents
+    num_labels, labels = cv2.connectedComponents(binary_img, connectivity=connectivity)
+
+    # num_labels includes background (label 0)
+    # So actual components = num_labels - 1
+
+    return num_labels - 1, labels
+
+def visualize_components(binary_img, connectivity=8):
+    """Visualize connected components với màu khác nhau"""
+    num_components, labels = label_connected_components(binary_img, connectivity)
+
+    # Create colored label image
+    # Random colors for each component
+    np.random.seed(42)
+    colors = np.random.randint(0, 255, size=(num_components + 1, 3), dtype=np.uint8)
+    colors[0] = [0, 0, 0]  # Background = black
+
+    colored_labels = colors[labels]
+
+    # Visualize
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+    axes[0].imshow(binary_img, cmap='gray')
+    axes[0].set_title('Original Binary Image')
+    axes[0].axis('off')
+
+    axes[1].imshow(colored_labels)
+    axes[1].set_title(f'{connectivity}-Connected Components\n({num_components} components)')
+    axes[1].axis('off')
+
+    # Compare 4 vs 8
+    num_comp_4, labels_4 = label_connected_components(binary_img, 4)
+    num_comp_8, labels_8 = label_connected_components(binary_img, 8)
+
+    axes[2].text(0.5, 0.7, f'4-connected: {num_comp_4} components',
+                ha='center', va='center', fontsize=14, transform=axes[2].transAxes)
+    axes[2].text(0.5, 0.3, f'8-connected: {num_comp_8} components',
+                ha='center', va='center', fontsize=14, transform=axes[2].transAxes)
+    axes[2].axis('off')
+
+    plt.tight_layout()
+    plt.savefig('connected_components.png', dpi=150)
+    print(f"Found {num_components} components with {connectivity}-connectivity")
+
+# Example
+binary = cv2.imread('binary_shapes.png', cv2.IMREAD_GRAYSCALE)
+visualize_components(binary, connectivity=8)
+```
+
+### 11.2. Pathfinding với Different Connectivity
+```python
+from collections import deque
+
+def bfs_shortest_path(grid, start, goal, connectivity=4):
+    """
+    Find shortest path using BFS
+
+    Args:
+        grid: 2D binary array (1=walkable, 0=obstacle)
+        start: (row, col) starting position
+        goal: (row, col) goal position
+        connectivity: 4 or 8
+
+    Returns:
+        path: List of (row, col) from start to goal, or None
+        distance: Path length
+    """
+    if connectivity == 4:
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    else:  # 8
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0),
+                    (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+    H, W = grid.shape
+    visited = set([start])
+    queue = deque([(start, [start])])
+
+    while queue:
+        (row, col), path = queue.popleft()
+
+        if (row, col) == goal:
+            return path, len(path) - 1
+
+        for dr, dc in neighbors:
+            nr, nc = row + dr, col + dc
+
+            # Check bounds
+            if 0 <= nr < H and 0 <= nc < W:
+                # Check walkable and not visited
+                if grid[nr, nc] == 1 and (nr, nc) not in visited:
+                    visited.add((nr, nc))
+                    queue.append(((nr, nc), path + [(nr, nc)]))
+
+    return None, float('inf')  # No path found
+
+# Example: Compare 4 vs 8 connectivity
+grid = np.ones((10, 10), dtype=np.uint8)
+grid[3:7, 4:6] = 0  # Add obstacle
+
+start = (0, 0)
+goal = (9, 9)
+
+path_4, dist_4 = bfs_shortest_path(grid, start, goal, connectivity=4)
+path_8, dist_8 = bfs_shortest_path(grid, start, goal, connectivity=8)
+
+print(f"4-connected path length: {dist_4}")
+print(f"8-connected path length: {dist_8}")
+# 8-connected should be shorter (allows diagonal moves)
+```
+
+### 11.3. Distance Transform
+```python
+def compare_distance_transforms(binary_img):
+    """So sánh distance transforms với different metrics"""
+
+    # Distance transforms
+    dist_l1 = cv2.distanceTransform(binary_img, cv2.DIST_L1, 3)  # Manhattan
+    dist_l2 = cv2.distanceTransform(binary_img, cv2.DIST_L2, 5)  # Euclidean
+    dist_c = cv2.distanceTransform(binary_img, cv2.DIST_C, 3)    # Chessboard
+
+    # Normalize for display
+    dist_l1_display = cv2.normalize(dist_l1, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    dist_l2_display = cv2.normalize(dist_l2, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    dist_c_display = cv2.normalize(dist_c, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+    # Visualize
+    fig, axes = plt.subplots(2, 2, figsize=(12, 12))
+
+    axes[0, 0].imshow(binary_img, cmap='gray')
+    axes[0, 0].set_title('Original Binary')
+
+    axes[0, 1].imshow(dist_l1_display, cmap='hot')
+    axes[0, 1].set_title('L1 Distance (Manhattan)')
+
+    axes[1, 0].imshow(dist_l2_display, cmap='hot')
+    axes[1, 0].set_title('L2 Distance (Euclidean)')
+
+    axes[1, 1].imshow(dist_c_display, cmap='hot')
+    axes[1, 1].set_title('Chessboard Distance')
+
+    for ax in axes.flatten():
+        ax.axis('off')
+
+    plt.tight_layout()
+    plt.savefig('distance_transforms.png', dpi=150)
+
+# compare_distance_transforms(binary_img)
+```
+
+## 12. Best Practices
+
+### ✅ Nên làm
+
+1. **Chọn connectivity phù hợp**
+   ```python
+   # OCR/Text: 8-connected (letters có diagonal strokes)
+   num_chars = cv2.connectedComponents(text_binary, connectivity=8)[0] - 1
+
+   # Grid-based games: 4-connected
+   path = find_path(grid, start, goal, connectivity=4)
+   ```
+
+2. **Jordan Curve rule**
+   ```python
+   # Foreground 4-connected → Background 8-connected
+   num_fg = cv2.connectedComponents(fg, connectivity=4)[0] - 1
+   num_bg = cv2.connectedComponents(bg, connectivity=8)[0] - 1
+   ```
+
+### ❌ Không nên làm
+
+- Không dùng cả foreground và background cùng connectivity
+
+### 💡 Tips
+
+**Connectivity selection**:
+```
+Task: Character recognition → 8-connected
+Task: Circuit inspection   → 4-connected
+Task: Pathfinding          → 8-connected (shorter paths)
+Task: Flood fill           → 8-connected (fill complete regions)
+```
+
+## 13. Common Pitfalls
+
+### Lỗi 1: Foreground/Background paradox
+**Vấn đề**: Dùng cả 2 cùng 4-connected hoặc 8-connected.
+
+**Giải pháp**: FG=4 → BG=8, hoặc FG=8 → BG=4.
+
+### Lỗi 2: Quên diagonal cost
+**Vấn đề**: Trong pathfinding, diagonal move có cost √2, không phải 1.
+
+**Giải pháp**: Weighted pathfinding (A*, Dijkstra).
+
+## 14. Bài tập Thực hành
+
+### Bài 1: Implement BFS
+Viết BFS với 4-connected và 8-connected, so sánh path length.
+
+### Bài 2: Component Analysis
+Đếm số objects trong binary image, lọc theo size.
+
+### Bài 3: Distance Map
+Tính distance từ mỗi pixel đến nearest obstacle.
+
+## 15. Tóm tắt
 
 | Connectivity | Láng giềng | Distance | Số bước | Ứng dụng |
 |--------------|-----------|----------|---------|----------|
@@ -283,6 +509,13 @@ def count_components(binary_img, connectivity=8):
 - 4-connectivity: Chặt chẽ, ít ambiguity
 - 8-connectivity: Linh hoạt, đường đi ngắn
 - m-connectivity: Cân bằng, tránh paradox
+
+**Key Takeaways**:
+1. **4-connected** = 4 neighbors (orthogonal only)
+2. **8-connected** = 8 neighbors (include diagonals)
+3. **Jordan Curve rule**: FG and BG must use different connectivity
+4. **Pathfinding**: 8-connected gives shorter paths
+5. **Component counting**: Connectivity affects component count
 
 ---
 

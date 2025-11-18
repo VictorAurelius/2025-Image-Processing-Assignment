@@ -83,3 +83,10 @@ lưu kết quả điều tra vào file md
 tạo code và documents cho các bài lab vừa điều tra được trong code-implement và documents giống như T1-bieu-dien-va-thu-nhan-anh bằng cách:
 1. tạo req-5 là plan task cho claude, lưu ý document và comment phải là tiếng việt, hướng dẫn về input đầy đủ, folder chia tên như file pdf. Tạo hướng dẫn đọc code cho từng bài để hiểu được code nhanh nhất
 2. do req-5
+
+hãy đọc req-5 để hiểu context
+documents/T1-bieu-dien-va-thu-nhan-anh chưa có code-reading-guide
+theory của phần T1 này cũng chưa chi tiết lắm
+hãy:
+1. tạo req-6 để giải quyết các vấn đề trên
+2. do req-6 với mode liên tục, không cần hỏi xác nhận
