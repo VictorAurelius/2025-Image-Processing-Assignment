@@ -90,3 +90,11 @@ theory của phần T1 này cũng chưa chi tiết lắm
 hãy:
 1. tạo req-6 để giải quyết các vấn đề trên
 2. do req-6 với mode liên tục, không cần hỏi xác nhận
+
+hãy tạo plan task requirements/test/req-1.md cho claude để thực hiện:
+
+1. hãy đọc requirements/test/de1.jpg
+2. hãy tạo ra file md đề bài đọc được từ ảnh
+3. ghi tiếp vào file md này lời giải
+4. làm tương tự vào de2, de3, de4
+5. tất cả các file output lưu ở requirements/test/
